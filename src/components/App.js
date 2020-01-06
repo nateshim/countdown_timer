@@ -16,8 +16,18 @@ class App extends React.Component{
       seconds: '00',
       minutes: '00',
       hours: '00',
-      isDisabled: false
+      isDisabled: false,
+      selectedColor: "red"
     }
+	  this.chooseSound = (color) => this.setState({selectedColor: color});
+	  this.playAudio = () => {
+		switch(this.state.selectedColor){
+			case "red":
+				this.red.play();
+			default:
+				this.red.play();
+									   }
+	  }
     this.secondsRemaining = '0';
     this.intervalHandle = '0';
     this.handleHourChange = this.handleHourChange.bind(this);
@@ -71,15 +81,16 @@ class App extends React.Component{
             minutes: "0" + min,
           })
         }
-        if (min === 0 & sec === 0 && hr === 0) {
+        if (min =='00' & sec == '00' && hr == '00') {
           clearInterval(this.intervalHandle);
+          this.playAudio();
         }
         this.secondsRemaining--
     }
   }
 
   startCountDown() {
-    if (this.state.minutes === '') {
+    if (this.state.minutes === '00' && this.state.hours==='00' && this.state.seconds==='00') {
       
     } else if (this.state.isDisabled) {
 
@@ -93,7 +104,7 @@ class App extends React.Component{
       let time = this.state.minutes;
       if (this.state.hours == '00') {
         this.secondsRemaining =  this.state.seconds+(time*60);
-      }else {
+      } else {
         this.secondsRemaining =  this.state.seconds+(time*60)+(this.state.hours*3600);
       }
     }
@@ -123,6 +134,10 @@ class App extends React.Component{
             </Grid>
           </Grid>
         </Parallax>
+          <audio ref={(red) => { this.red = red; }} loop>
+			      <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg" >
+			      </source>
+		      </audio>
       </div>
     );
   }
